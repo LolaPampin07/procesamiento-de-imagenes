@@ -34,6 +34,13 @@ i_max = max(I(:));
 r_min = min(R(:));
 r_max = max(R(:));
 
+
+
+R = im2double(R);
+
+r_min = min(R(:));
+r_max = max(R(:));
+
 % fijo los valores min y max de la salida
 s_min = 50;
 s_max = 100;
@@ -46,9 +53,6 @@ r_low = min(R(:));
 r_high = max(R(:));
 
 S = imadjust(R, [r_low r_high], [s_low s_high]);
-
-s_min = min(S(:));
-s_max = max(S(:));
 %% 7)Aplique a una imagen la transformación stretching utilizando el comando imadjust. Grafique ambos histogramas (original y procesado).
 
 figure
@@ -58,18 +62,3 @@ subplot(323); imshow(R); title('Img modificada')
 subplot(324); imhist(R), title(['Histo modificado , min=', num2str(r_min), ' max=', num2str(r_max)]); axis tight
 subplot(325); imshow(S); title('Imagen con stretching')
 subplot(326); imhist(S); title(['Histograma con stretching, min=', num2str(s_min), ' max=', num2str(s_max)]); axis tight
-
-
-%% Umbral --> de nuevo de otra forma
-% otra forma de hacerlo
-ix = find(I >= u); %devuelve la posicion donde se cumple la condicion
-O1 = zeros(size(I));
-O1(ix) = 255;
-
-% otra forma de hacerlo
-O1b = I >= u;   % imagen binaria
-
-% -------------------------
-% Umbral doble
-ui = 100;
-us = 200;
