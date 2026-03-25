@@ -1,0 +1,38 @@
+% UNIDAD 2 - CONVOLUCION
+%% ABRIR IMAGEN
+clc; clear all; close all;
+[file,dir]=uigetfile('.bmp;.tif;.jpg;.png');
+filename=[dir,file];
+info=imfinfo(filename);
+
+switch info.ColorType
+    case 'indexed'  %ImOrig.bmp
+        [X,map]=imread(filename);
+        I=ind2gray(X,map);
+
+    case 'grayscale'
+        I=imread(filename);
+
+    case 'truecolor' %m83.bmp
+        rgb=imread(filename);
+        I=rgb2gray(rgb);
+end
+%%
+h1=1/9*(ones([3 3]));
+I=im2double(I);
+O= conv2(I,h1,'same');
+
+figure
+subplot(221); imshow(I);
+subplot(222); imhist(I);
+subplot(223); imshow(O);
+subplot(224); imhist(O);
+
+h2=1/9*(ones([3 3]));
+O= conv2(I,h2,'same');
+
+figure
+subplot(221); imshow(I);
+subplot(222); imhist(I);
+subplot(223); imshow(O);
+subplot(224); imhist(O);
