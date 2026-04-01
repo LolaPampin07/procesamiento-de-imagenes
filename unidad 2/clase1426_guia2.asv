@@ -1,0 +1,96 @@
+% UNIDAD 2 - CONVOLUCION
+%%%%%%%%%%%%%%%%%%%%%%%CLASE 01-04-2026%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% ABRIR IMAGEN
+clc; clear all; close all;
+[file,dir]=uigetfile('.bmp;.tif;.jpg;.png');
+filename=[dir,file];
+info=imfinfo(filename);
+
+switch info.ColorType
+    case 'indexed'  %ImOrig.bmp
+        [X,map]=imread(filename);
+        I=ind2gray(X,map);
+
+    case 'grayscale'
+        I=imread(filename);
+
+    case 'truecolor' %m83.bmp
+        rgb=imread(filename);
+        I=rgb2gray(rgb);
+end
+
+%% Ejercicio 1 - RUIDO
+
+%se puede hacer personalizado x usuario
+
+%convertimos a clase double los datos
+I = im2double(I);
+
+%Obs: Imnoise convierte la imagen de entrada a class double [0, 1] antes de operar
+
+%la clase de la imagen de salida es igual a la de entrada
+J1 = imnoise(I,'salt & pepper',0.05);
+J2 = imnoise(I,'gaussian',0,0.05);
+
+figure
+subplot(131); imshow(I); title('Imagen original')
+subplot(132); imshow(J1); title('con ruido sal y pimienta, d=0.1')
+subplot(133); imshow(J2); title('con ruido Gaussiano, m=0, var=0.05')
+
+%% FILTRO PASABAJO
+%Filtros pasa bajos
+Hpb1 = [0 1 0; 1 1 1; 0 1 0]/5;
+Hpb2 = ones(3)/9;
+Hpb3 = [1 1 1; 1 2 1; 1 1 1]/10;
+
+Opb1 = conv2(I,Hpb1);  % "full" por defecto
+Opb2 = conv2(I,Hpb2);
+Opb3 = conv2(I,Hpb3);
+
+figure(1)
+subplot(221); imshow(I);     title('Img original')
+subplot(222); imshow(Opb1); title('Filtro PB1')
+subplot(223); imshow(Opb2); title('Filtro PB2')
+subplot(224); imshow(Opb3); title('Filtro PB3')
+
+%format rat --> racional //
+
+%Modificando tamaño kernel
+Hpb2 = ones(3)/9;   % PB 3x3
+Hpb3 = ones(5)/25;  % PB 5x5
+
+Opb2 = conv2(I,Hpb2,'valid');
+Opb3 = conv2(I,Hpb3,'valid');
+
+Hpa2 = [-1 -1 -1; -1 9 -1; -1 -1 -1];   % PA 3x3
+Hpa3 = -1*ones(5);
+Hpa3(3,3) = 25;    % PA 5x5
+
+Opb1 = conv2(I, Hpb1);   % "full" por defecto
+Opb2 = conv2(I, Hpb2);
+Opb3 = conv2(I, Hpb3);
+
+figure(1)
+subplot(221); imshow(I);     title('Img original')
+subplot(222); imshow(Opb1); title('Filtro PB1')
+subplot(223); imshow(Opb2); title('Filtro PB2')
+subplot(224); imshow(Opb3); title('Filtro PB3')
+
+
+%% PASA ALTO
+%.........................................
+%Filtros pasa altos
+Hpa1 = [0 -1 0; -1 5 -1; 0 -1 0];
+Hpa2 = [-1 -1 -1; -1 9 -1; -1 -1 -1];
+Hpa3 = [-1  2 -1;  2  5  2; -1  2 -1];
+
+%generan valores positivos y negativos, probar de
+Opa1 = conv2(I,Hpa1);
+Opa2 = conv2(I,Hpa2);
+Opa3 = conv2(I,Hpa3);
+
+figure(2)
+subplot(221); imshow(I);     title('Img original')
+subplot(222); imshow(Opa1); title('Filtro PA1')
+subplot(223); imshow(Opa2); title('Filtro PA2')
+subplot(224); imshow(Opa2); title('Filtro PA3')

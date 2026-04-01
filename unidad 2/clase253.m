@@ -23,16 +23,17 @@ I=im2double(I);
 O= conv2(I,h1,'same');
 
 figure
-subplot(221); imshow(I);
+subplot(221); imshow(I,[]); colorbar
 subplot(222); imhist(I);
-subplot(223); imshow(O);
+subplot(223); imshow(O,[]); colorbar
 subplot(224); imhist(O);
 
 h2=[0 -1 0, -1 5 -1, 0 -1 0];
 O= conv2(I,h2,'same');
 
 figure
-subplot(221); imshow(I);
+subplot(221); imshow(I); colorbar
 subplot(222); imhist(I);
-subplot(223); imshow(O);
+subplot(223); imshow(O); colorbar
 subplot(224); imhist(O);
+
