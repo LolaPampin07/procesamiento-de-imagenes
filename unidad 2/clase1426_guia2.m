@@ -37,7 +37,7 @@ subplot(131); imshow(I); title('Imagen original')
 subplot(132); imshow(J1); title('con ruido sal y pimienta, d=0.1')
 subplot(133); imshow(J2); title('con ruido Gaussiano, m=0, var=0.05')
 
-%% FILTRO PASABAJO
+%% FILTRO PASABAJO --> EJ 2
 %Filtros pasa bajos
 Hpb1 = [0 1 0; 1 1 1; 0 1 0]/5;
 Hpb2 = ones(3)/9;
@@ -77,7 +77,7 @@ subplot(223); imshow(Opb2); title('Filtro PB2')
 subplot(224); imshow(Opb3); title('Filtro PB3')
 
 
-%% PASA ALTO
+%% PASA ALTO --> EJ 3
 %.........................................
 %Filtros pasa altos
 Hpa1 = [0 -1 0; -1 5 -1; 0 -1 0];
@@ -107,3 +107,57 @@ H9x9 = conv2(H5x5, H5x5);  % 5+5-1 = 9
 
 % La suma de coef siempre da 1
 [sum(H3x3(:)) sum(H5x5(:)) sum(H7x7(:)) sum(H9x9(:))]
+
+%% EJ 5) Abra una imagen y aplíquele filtros detecta bordes basados en primera y segunda derivada.
+
+% implementado c/ funcion
+bordes_sobel = edge(I, 'sobel');
+
+figure
+imshow(bordes_sobel)
+title('Bordes con Sobel (1ª derivada)');
+
+% manual 
+% Máscaras Sobel
+Gx = [-1 0 1; -2 0 2; -1 0 1];
+Gy = [-1 -2 -1; 0 0 0; 1 2 1];
+
+Ix = imfilter(I, Gx, 'replicate');
+Iy = imfilter(I, Gy, 'replicate');
+
+magnitud = sqrt(Ix.^2 + Iy.^2);
+
+figure
+imshow(magnitud, [])
+title('Magnitud del gradiente – Sobel');
+
+% Segunda derivada
+%implementado
+bordes_lap = edge(I, 'log');
+figure
+imshow(bordes_lap)
+title('Bordes con Laplaciano (2ª derivada)');
+
+% manual
+I = im2double(I);
+
+% Máscara laplaciana de 4 vecinos
+L = [0 1 0; 1 -4 1; 0 1 0];
+
+% Convolución
+lap = imfilter(I, L);
+
+
+bordes = abs(lap) > 0.05;
+imshow(bordes)
+title('Bordes detectados con Laplaciano');
+
+
+figure
+imshow(lap, [])
+title('Segunda derivada – Laplaciano con máscara');
+
+
+
+
+
