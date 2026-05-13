@@ -89,15 +89,12 @@ function v = filtro_minimo(A)
 v = min(A);
 end
 
+
 m=3; n=3;
-O = colfilt (In, [m n], 'sliding', @filtro_minimo);
+O = colfilt (In, [m n], 'sliding', @filtro_minimo)
 
-subplot(311); imshow(I); title('Imagen original')
-subplot(312); imshow(In); title('Imagen con ruido')
-subplot(313); imshow(O); title('Imagen con Filtro minima')
+subplot(211); imshow(I); title('Imagen original')
 
-%% ---------- FILTRO MEDIANA -------------
-O = medfilt2 (In, [m n]);
-subplot(311); imshow(I); title('Imagen original')
-subplot(312); imshow(In); title('Imagen con ruido')
-subplot(313); imshow(O); title('Imagen con Filtro mediana')
+subplot(212); imshow(O); title('Imagen con Filtro')
+
+
